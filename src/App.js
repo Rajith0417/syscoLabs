@@ -1,23 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
+import LoginForm from "./LoginForm";
+import Home from "./Home";
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [UserName, setUserName] = useState(false);
+  const onLoginChangeHandler = (state, UserName) => {
+    setIsLoggedIn(state);
+    setUserName(UserName);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app-wrapper">
+      {isLoggedIn ? (
+        <Home name={UserName} />
+      ) : (
+        <LoginForm onLoginChange={onLoginChangeHandler} />
+      )}
     </div>
   );
 }
