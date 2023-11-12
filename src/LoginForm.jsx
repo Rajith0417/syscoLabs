@@ -7,43 +7,26 @@
 // 05. Upon successful login, display the Home page with a welcome message containing the user's name. (The Home page should be a separate component)
 // 06. Display a list of categories on the Home page.
 // 07. Display items under the respective category headers and style them.
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { login } from "./util/login";
 import Home from "./Home";
 
 const LoginForm = () => {
   const [isActiveLogin, setIsActiveLogin] = useState(false);
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoginSuccessful, setIsLoginSuccessful] = useState(false);
-  // const navigate = useNavigate();
-
-  useEffect(() => {
-    console.log(email);
-    console.log(password);
   
-    // return () => {
-    //   second
-    // }
-  }, [email, password])
-  
-
   const passwordValidate = ()=>{
-    let password = document.getElementById("password").value;
     let passwordCount = document.getElementById("password").value.length;
-    // console.log(document.getElementById("password").value);
-    // console.log(passwordCount);
-    if(passwordCount >= 5){
+    if(passwordCount >= 3){
       setIsActiveLogin(true);
-      setPassword(password);
     }
   }
 
   const submitForm = (event)=>{
     event.preventDefault();
     setEmail(event.target[0].value);
-    setPassword(event.target[1].value);
 
     const credentials = {
       email: event.target[0].value,
