@@ -1,23 +1,24 @@
+import React from "react";
 import menu from "./util/menu";
+import "./Home.css";
 
-const Home = ({ name }) => {
+function Home({ userName }) {
   return (
-    <div className="home-container">
-      <h1>Welcome,</h1>
-      <h2>{name}</h2>
-      {menu.map((item) => {
+    <div className="menu">
+      {menu.map((menuItem, index) => {
         return (
-          <>
-            <h3>{item.category}</h3>
-            <ul>
-              {item.items.map((item) => {
-                return <li>{item.name}</li>;
+          <div className="menu__wrapper">
+            <div className="menu__category" key={index}>{menuItem.category}</div>
+            <ul className="menu__items">
+              {menuItem.items.map((singleItem, index2) => {
+                return <li className="menu__item" key={index2}>{singleItem.name}</li>;
               })}
             </ul>
-          </>
+          </div>
         );
       })}
     </div>
   );
-};
+}
+
 export default Home;

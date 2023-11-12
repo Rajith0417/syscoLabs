@@ -1,36 +1,71 @@
-import { useState } from "react";
+// ======= LOGIN FORM ======
+// Steps
+// 01. Disable the login button in the initial state.
+// 02. Enable the login button when the user types at least 3 characters in the password field.
+// 03. Display email and password in the console upon form submission.
+// 04. Utilize login.js to authenticate the username and password and display an error message for incorrect input values.
+// 05. Upon successful login, display the Home page with a welcome message containing the user's name. (The Home page should be a separate component)
+// 06. Display a list of categories on the Home page.
+// 07. Display items under the respective category headers and style them.
+import { useState, useEffect } from "react";
 import { login } from "./util/login";
+import Home from "./Home";
 
-//======= LOGIN FORM ======
-const LoginForm = ({ onLoginChange }) => {
+const LoginForm = () => {
+  const [isActiveLogin, setIsActiveLogin] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
-  let disableLoggingBtn = password.length < 6 || !email;
-  const emailHandler = (e) => {
-    setEmail(e.target.value);
-  };
-  const passwordHandler = (e) => {
-    setPassword(e.target.value);
-  };
+  const [error, setError] = useState("");
+  const [isLoginSuccessful, setIsLoginSuccessful] = useState(false);
+  // const navigate = useNavigate();
 
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    setError(null);
-    setLoading(true);
-    try {
-      await login({ email, password });
-      setLoading(false);
-      onLoginChange(true, email);
-    } catch (error) {
-      setLoading(false);
-      setError(error);
-      onLoginChange(false);
+  useEffect(() => {
+    console.log(email);
+    console.log(password);
+  
+    // return () => {
+    //   second
+    // }
+  }, [email, password])
+  
+
+  const passwordValidate = ()=>{
+    let password = document.getElementById("password").value;
+    let passwordCount = document.getElementById("password").value.length;
+    // console.log(document.getElementById("password").value);
+    // console.log(passwordCount);
+    if(passwordCount >= 5){
+      setIsActiveLogin(true);
+      setPassword(password);
     }
-  };
+  }
+
+  const submitForm = (event)=>{
+    event.preventDefault();
+    setEmail(event.target[0].value);
+    setPassword(event.target[1].value);
+
+    const credentials = {
+      email: event.target[0].value,
+      password: event.target[1].value,
+    }
+    
+    login(credentials)
+    .then(()=>{
+      setError("");
+      setIsLoginSuccessful(true);
+    })
+    .catch((e)=>{
+      console.log(e);
+      setError(e.toString());
+    })
+  }
+
   return (
-    <form className="login-wrapper" onSubmit={submitHandler}>
+    <>
+    {
+    !isLoginSuccessful ? (
+      <form className="login-wrapper" onSubmit={submitForm}>
       <div className="row">
         <label htmlFor="email">Email</label>
         <input
@@ -38,9 +73,7 @@ const LoginForm = ({ onLoginChange }) => {
           type="email"
           name="email"
           placeholder="Enter your email here"
-          autoComplete="email"
-          value={email}
-          onChange={emailHandler}
+          onChange={setEmail}
         />
       </div>
       <div className="row">
@@ -49,21 +82,24 @@ const LoginForm = ({ onLoginChange }) => {
           id="password"
           type="password"
           name="password"
-          autoComplete="password"
-          value={password}
-          onChange={passwordHandler}
+          onChange={passwordValidate}
         />
       </div>
-      {error && <p>{error.message}</p>}
-      {loading && <p>Loading...</p>}
-      <button
-        className="btn primary"
-        type="submit"
-        disabled={disableLoggingBtn}
-      >
+      {
+        error
+      }
+      <button 
+      disabled={!isActiveLogin}
+      className="btn primary" 
+      type="submit">
         Login
       </button>
     </form>
+    ) : (
+      <Home userName={email}/>
+    )
+    }
+  </>
   );
 };
 export default LoginForm;
