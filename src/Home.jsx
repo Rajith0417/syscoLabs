@@ -5,13 +5,14 @@ import "./Home.css";
 function Home({ userName }) {
   return (
     <div className="menu">
+      <h2>Hi {userName}</h2>
       {menu.map((menuItem, index) => {
         return (
-          <div className="menu__wrapper">
-            <div className="menu__category" key={index}>{menuItem.category}</div>
+          <div key={index} className="menu__wrapper">
+            <div className="menu__category">{menuItem.category}</div>
             <ul className="menu__items">
               {menuItem.items.map((singleItem, index2) => {
-                return <li className="menu__item" key={index2}>{singleItem.name}</li>;
+                return <li key={index2} className="menu__item" >{singleItem.name}</li>;
               })}
             </ul>
           </div>

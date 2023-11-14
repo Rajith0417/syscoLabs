@@ -9,13 +9,11 @@
 // 07. Display items under the respective category headers and style them.
 import { useState } from "react";
 import { login } from "./util/login";
-import Home from "./Home";
+// import Home from "./Home";
 
-const LoginForm = () => {
+const LoginForm = ({setUserEmail2}) => {
   const [isActiveLogin, setIsActiveLogin] = useState(false);
-  const [email, setEmail] = useState("");
   const [error, setError] = useState("");
-  const [isLoginSuccessful, setIsLoginSuccessful] = useState(false);
   
   const passwordValidate = ()=>{
     let passwordCount = document.getElementById("password").value.length;
@@ -26,28 +24,27 @@ const LoginForm = () => {
 
   const submitForm = (event)=>{
     event.preventDefault();
-    setEmail(event.target[0].value);
 
     const credentials = {
       email: event.target[0].value,
       password: event.target[1].value,
     }
-    
+  
     login(credentials)
     .then(()=>{
       setError("");
-      setIsLoginSuccessful(true);
+      setUserEmail2(credentials.email);
     })
     .catch((e)=>{
       console.log(e);
       setError(e.toString());
+      setUserEmail2("");
     })
   }
 
   return (
     <>
     {
-    !isLoginSuccessful ? (
       <form className="login-wrapper" onSubmit={submitForm}>
       <div className="row">
         <label htmlFor="email">Email</label>
@@ -56,7 +53,7 @@ const LoginForm = () => {
           type="email"
           name="email"
           placeholder="Enter your email here"
-          onChange={setEmail}
+          // onChange={setEmail}
         />
       </div>
       <div className="row">
@@ -78,9 +75,6 @@ const LoginForm = () => {
         Login
       </button>
     </form>
-    ) : (
-      <Home userName={email}/>
-    )
     }
   </>
   );
