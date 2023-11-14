@@ -22,7 +22,7 @@ const LoginForm = ({setUserEmail2}) => {
     }
   }
 
-  const submitForm = (event)=>{
+  const submitForm = async (event)=>{
     event.preventDefault();
 
     const credentials = {
@@ -30,16 +30,25 @@ const LoginForm = ({setUserEmail2}) => {
       password: event.target[1].value,
     }
   
-    login(credentials)
-    .then(()=>{
+    // login(credentials)
+    // .then(()=>{
+    //   setError("");
+    //   setUserEmail2(credentials.email);
+    // })
+    // .catch((e)=>{
+    //   console.log(e);
+    //   setError(e.toString());
+    //   setUserEmail2("");
+    // })
+    try {
+      await login(credentials);
       setError("");
       setUserEmail2(credentials.email);
-    })
-    .catch((e)=>{
-      console.log(e);
-      setError(e.toString());
+    } catch (error) {
+      console.log(error);
+      setError(error.toString());
       setUserEmail2("");
-    })
+    }
   }
 
   return (
